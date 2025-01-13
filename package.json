@@ -1,12 +1,21 @@
 {
   "name": "local-to-crypto-api",
   "version": "1.0.0",
+  "description": "",
   "main": "index.js",
+  "packageManager": "pnpm@6.7.1",
+  "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node --watch index.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "description": ""
+  "dependencies": {
+    "bcrypt": "^5.1.1",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.9.4"
+  }
 }
