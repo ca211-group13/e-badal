@@ -13,7 +13,9 @@ router.post('/login', loginUser);
 
 router.get("/",auth,getUsers)
 router.get('/profile', auth, getUserProfile);
-
+router.patch('/update_user', auth, updateUser);
+// Delete user
+router.delete('/delete_user', auth, deleteUser);
 router.post('/add-account', auth, addAccount);
 
 export default router;

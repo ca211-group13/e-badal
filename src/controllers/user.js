@@ -28,18 +28,6 @@ export const registerUser = async (req, res) => {
 };
 
 
-export const getUsers=async(req,res)=>{
-    try{
-
-        const users=await User.find();
-        res.status(200).json(users);
-    }catch(error){
-        console.log(error)
-        res.send(500).json({message:"internal server error"})
-    }
-
-}
-
 
 export const loginUser = async (req, res) => {
   try {
@@ -72,6 +60,19 @@ export const loginUser = async (req, res) => {
       res.status(500).json({ success: false, message: "Internal Server Error" });
   }
 };
+
+
+export const getUsers=async(req,res)=>{
+    try{
+
+        const users=await User.find();
+        res.status(200).json(users);
+    }catch(error){
+        console.log(error)
+        res.send(500).json({message:"internal server error"})
+    }
+
+}
 
 
 
@@ -129,5 +130,60 @@ export const getUserProfile = async (req, res) => {
   } catch (error) {
     console.error(error);
     res.status(500).json({ success: false, message: "Internal Server Error" });
+  }
+};
+
+
+// Update user profile
+export const updateUser = async (req, res) => {
+  try {
+      const { userId } = req.user; // Get the user ID from the request
+      const { name, email, phoneNumber } = req.body; // Destructure the request body
+
+      // Find the user by ID
+      const user = await User.findById(userId);
+      if (!user) {
+          return res.status(404).json({ success: false, message: "User not found" });
+      }
+
+      // Update the user fields if they are provided
+      if (name) user.name = name;
+      if (email) {
+          // Optionally check if the email is already taken
+          const existingUser = await User.findOne({ email });
+          if (existingUser && existingUser._id.toString() !== userId) {
+              return res.status(400).json({ success: false, message: "Email is already in use" });
+          }
+          user.email = email;
+      }
+      if (phoneNumber) user.phoneNumber = phoneNumber;
+
+      // Save the updated user details
+      await user.save();
+
+      res.json({ success: true, message: "Profile updated successfully", user });
+  } catch (error) {
+      console.error(error);
+      res.status(500).json({ success: false, message: "Internal Server Error" });
+  }
+};
+
+export const deleteUser = async (req, res) => {
+  try {
+      const { userId } = req.user; // Get the user ID from the request
+      
+      // Find the user by ID
+      const user = await User.findById(userId);
+      if (!user) {
+          return res.status(404).json({ success: false, message: "User not found" });
+      }
+
+      // Delete the user account
+      await User.findByIdAndDelete(userId);
+      
+      res.json({ success: true, message: "User account deleted successfully" });
+  } catch (error) {
+      console.error(error);
+      res.status(500).json({ success: false, message: "Internal Server Error" });
   }
 };
