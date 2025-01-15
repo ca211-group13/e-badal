@@ -69,3 +69,4 @@ userSchema.methods.comparePassword = async function(candidatePassword) {
 
 const User = model('User', userSchema);
 export default User;
+

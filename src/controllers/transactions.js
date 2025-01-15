@@ -1,4 +1,5 @@
-import Transaction from "../models/transaction";
+import mongoose from "mongoose";
+import Transaction from "../models/transaction.js";
 import User from '../models/user.js'
 
 // Create a New Transaction

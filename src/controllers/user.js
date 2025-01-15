@@ -1,7 +1,7 @@
 import { JWT_SECRET_KEY } from "../config/dotenv.js";
 import jwt from "jsonwebtoken";
 import User from "../models/user.js";
-
+import transaction from "../models/transaction.js";
 
 export const registerUser = async (req, res) => {
   try {
@@ -84,7 +84,7 @@ export const getUserProfile = async (req, res) => {
 
     if (transactionHistory && transactionHistory.length > 0) {
       // Assuming each transaction has a status field and a timestamp field (createdAt)
-      const transactions = await Transaction.find({
+      const transactions = await transaction.find({
         _id: { $in: transactionHistory }, // Query transactions based on their IDs
       });
 
@@ -182,18 +182,16 @@ export const deleteUser = async (req, res) => {
   }
 };
 
-export const getUsers = async (req, res) => {
+export const getAllUsers = async (req, res) => {
   try {
-    const id=req.user
-    const user =User.find
-
-    const users = await User.find();
-    res.status(200).json(users);
+      const users = await User.find();
+      res.json({ success: true, users });
   } catch (error) {
-    console.log(error);
-    res.send(500).json({ message: "internal server error" });
+      console.error(error);
+      res.status(500).json({ success: false, message: "Internal Server Error" });
   }
-};
+}
+
 
 // Create admin (only for owner)
 export const createAdmin = async (req, res) => {
