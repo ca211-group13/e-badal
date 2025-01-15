@@ -77,6 +77,7 @@ export const getUserProfile = async (req, res) => {
         .json({ success: false, message: "User not found" });
     }
 
+
     // Check if transaction history exists
     const { transactionHistory } = user;
     let isTherePendingTransaction = false;
@@ -184,6 +185,13 @@ export const deleteUser = async (req, res) => {
 
 export const getAllUsers = async (req, res) => {
   try {
+    const {userId}=req.user
+    const user= await User.findById(userId)
+    console.log(user)
+    if(user.role == "user"){
+     return res.status(403).json({success:false,message:"un othrized"})
+    }
+
       const users = await User.find();
       res.json({ success: true, users });
   } catch (error) {

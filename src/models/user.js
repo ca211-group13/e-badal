@@ -3,6 +3,44 @@ import bcrypt from "bcrypt";
 
 const { Schema, model } = mongoose;
 
+/**
+ * @swagger
+ * components:
+ *   schemas:
+ *     User:
+ *       type: object
+ *       required:
+ *         - name
+ *         - email
+ *         - password
+ *       properties:
+ *         name:
+ *           type: string
+ *         email:
+ *           type: string
+ *           unique: true
+ *         password:
+ *           type: string
+ *         role:
+ *           type: string
+ *           enum: [user, admin, owner]
+ *           default: user
+ *         accounts:
+ *           type: array
+ *           items:
+ *             $ref: '#/components/schemas/Account'
+ *     Account:
+ *       type: object
+ *       properties:
+ *         type:
+ *           type: string
+ *           enum: [EVC, Sahal, Zaad, USDT(TRC-20), USDT(BEP-20)]
+ *         phoneNumber:
+ *           type: string
+ *         usdtAddress:
+ *           type: string
+ */
+
 const accountSchema = new Schema({
     type: {
         type: String,
