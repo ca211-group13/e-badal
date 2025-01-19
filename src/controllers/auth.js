@@ -13,13 +13,15 @@ export const registerUser = async (req, res) => {
         .status(400)
         .json({ success: false, message: "User already exists" });
     }
+    console.log(name,"name")
 
     // Create new user
     const user = new User({ name, email, password });
     await user.save();
+    
 
     // Generate JWT token
-    const token = jwt.sign({ userId: user._id }, JWT_SECRET_KEY, {
+    const token = jwt.sign({ userId: user._id ,role:user.role}, JWT_SECRET_KEY, {
       expiresIn: "7d",
     });
 
@@ -60,9 +62,9 @@ export const loginUser = async (req, res) => {
     }
 
     // Generate JWT token
-    const token = jwt.sign({ userId: user._id }, JWT_SECRET_KEY, {
-      expiresIn: "7d",
-    });
+    const token = jwt.sign({ userId: user._id ,role:user.role}, JWT_SECRET_KEY, {
+        expiresIn: "7d",
+      });
 
     res.status(200).json({ success: true, message: "Login successful", token });
   } catch (error) {
@@ -77,10 +79,6 @@ export const createAdmin = async (req, res) => {
     const { userId } = req.user;
     const { name, email, password, phoneNumber } = req.body;
 
-    const owner = await User.findById(userId);
-    if (!owner || owner.role !== "owner") {
-      return res.status(403).json({ success: false, message: "Unauthorized" });
-    }
 
     const existingAdmin = await User.findOne({ email });
     if (existingAdmin) {
@@ -115,10 +113,6 @@ export const removeAdmin = async (req, res) => {
     const { userId } = req.user;
     const { adminId } = req.params;
 
-    const owner = await User.findById(userId);
-    if (!owner || owner.role !== "owner") {
-      return res.status(403).json({ success: false, message: "Unauthorized" });
-    }
 
     const admin = await User.findById(adminId);
     if (admin.role === "owner") {

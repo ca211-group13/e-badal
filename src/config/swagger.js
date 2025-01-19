@@ -17,15 +17,11 @@ const options = {
     tags: [
       {
         name: "Authentication",
-        description: "authantication related endpoints",
+        description: "Authentication related endpoints",
       },
       {
         name: "Users",
         description: "User management endpoints",
-      },
-      {
-        name: "Admin Management",
-        description: "Admin creation and management endpoints",
       },
       {
         name: "Transactions",
@@ -35,9 +31,79 @@ const options = {
         name: "Fees",
         description: "Fee management endpoints",
       },
-
     ],
     components: {
+      schemas: {
+        User: {
+          type: "object",
+          required: ["name", "email", "password"],
+          properties: {
+            name: {
+              type: "string",
+              description: "User's full name",
+            },
+            email: {
+              type: "string",
+              format: "email",
+              description: "User's email address",
+            },
+            password: {
+              type: "string",
+              format: "password",
+              description: "User's password",
+            },
+            role: {
+              type: "string",
+              enum: ["user", "admin", "owner"],
+              default: "user",
+              description: "User's role",
+            },
+            phoneNumber: {
+              type: "string",
+              description: "User's phone number",
+            },
+          },
+        },
+        LoginCredentials: {
+          type: "object",
+          required: ["email", "password"],
+          properties: {
+            email: {
+              type: "string",
+              format: "email",
+            },
+            password: {
+              type: "string",
+              format: "password",
+            },
+          },
+        },
+        AuthResponse: {
+          type: "object",
+          properties: {
+            success: {
+              type: "boolean",
+            },
+            message: {
+              type: "string",
+            },
+            token: {
+              type: "string",
+            },
+          },
+        },
+        Error: {
+          type: "object",
+          properties: {
+            success: {
+              type: "boolean",
+            },
+            message: {
+              type: "string",
+            },
+          },
+        },
+      },
       securitySchemes: {
         bearerAuth: {
           type: "http",
@@ -46,6 +112,11 @@ const options = {
         },
       },
     },
+    security: [
+      {
+        bearerAuth: [],
+      },
+    ],
   },
   apis: ["./src/routes/*.js"], // Path to the API routes
 };

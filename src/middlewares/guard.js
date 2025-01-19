@@ -12,7 +12,7 @@ export const auth = (req, res, next) => {
     const decoded = jwt.verify(token, JWT_SECRET_KEY);
     console.log("decode user id")
     console.log(decoded)
-    req.user = { userId: decoded.userId }; // Set userId in req.user object
+    req.user = { userId: decoded.userId ,role:decoded.role}; // Set userId in req.user object
     next();
   } catch (error) {
     res.status(401).json({ message: "Token is not valid" });

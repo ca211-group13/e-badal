@@ -75,11 +75,8 @@ export const updateTransactionStatus = async (req, res) => {
             return res.status(400).json({ success: false, message: "Invalid Transaction ID" });
         }
 
-        const user = await User.findById(userId);
 
-        if (!user || (user.role !== 'admin' && user.role !== 'owner')) {
-            return res.status(403).json({ success: false, message: "Unauthorized" });
-        }
+
 
         const transaction = await Transaction.findByIdAndUpdate(
             transactionId,

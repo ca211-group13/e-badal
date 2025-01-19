@@ -124,10 +124,7 @@ export const getAllUsers = async (req, res) => {
   try {
     const { userId } = req.user;
     const user = await User.findById(userId);
-    console.log(user);
-    if (user.role == "user") {
-      return res.status(403).json({ success: false, message: "un othrized" });
-    }
+
 
     const users = await User.find();
     res.json({ success: true, users });

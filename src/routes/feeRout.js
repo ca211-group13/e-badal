@@ -1,6 +1,7 @@
 import express from "express"
 import { getFees, updateDepositFee, updateWithdrawalFee } from "../controllers/fees.js";
-import { auth } from "../middlewares/authMiddleware.js";
+import { auth } from "../middlewares/guard.js";
+import { allowRoles } from "../middlewares/acl.js";
 
 const router = express.Router();
 
@@ -85,7 +86,7 @@ router.get('/', getFees);
  *                   type: string
  *                   example: Deposit fee is required
  */
-router.put("/deposit", auth, updateDepositFee);
+router.put("/deposit", auth, allowRoles("owner"),updateDepositFee);
 
 /**
  * @swagger
@@ -135,6 +136,6 @@ router.put("/deposit", auth, updateDepositFee);
  *                   type: string
  *                   example: Unauthorized access
  */
-router.put("/withdrawal", auth, updateWithdrawalFee);
+router.put("/withdrawal", auth,allowRoles("owner"), updateWithdrawalFee);
 
 export default router;

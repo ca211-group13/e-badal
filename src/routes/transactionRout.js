@@ -1,6 +1,7 @@
 import express from 'express';
 import { createTransaction, getAllTransactions, getTransactionAnalytics, getUserTransactions, updateTransactionStatus } from '../controllers/transactions.js';
-import { auth } from '../middlewares/authMiddleware.js';
+import { auth } from "../middlewares/guard.js";
+import { allowRoles } from '../middlewares/acl.js';
 
 const router = express.Router();
 
@@ -103,7 +104,7 @@ router.post('/create-transaction', auth, createTransaction);
  *       404:
  *         description: Transaction not found
  */
-router.patch('/:transactionId', auth, updateTransactionStatus);
+router.patch('/:transactionId', auth,allowRoles("admin","owner"), updateTransactionStatus);
 
 /**
  * @swagger
@@ -158,7 +159,7 @@ router.patch('/:transactionId', auth, updateTransactionStatus);
  *       401:
  *         description: Unauthorized
  */
-router.get('/transactions', auth, getAllTransactions);
+router.get('/transactions', auth,allowRoles("admin","owner"), getAllTransactions);
 
 /**
  * @swagger
@@ -189,7 +190,7 @@ router.get('/transactions', auth, getAllTransactions);
  *       401:
  *         description: Unauthorized
  */
-router.get('/analytics', auth, getTransactionAnalytics);
+router.get('/analytics', auth,allowRoles("admin","owner"), getTransactionAnalytics);
 
 /**
  * @swagger

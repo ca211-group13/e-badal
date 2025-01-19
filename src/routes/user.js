@@ -5,8 +5,9 @@ import {
   updateUser,
   deleteUser,
 } from "../controllers/user.js";
-import { auth } from "../middlewares/authMiddleware.js";
+import { auth } from "../middlewares/guard.js";
 import { addAccount } from "../controllers/accounts.js";
+import { allowRoles } from "../middlewares/acl.js";
 
 const router = express.Router();
 
@@ -42,7 +43,7 @@ const router = express.Router();
  *       401:
  *         description: Unauthorized
  */
-router.get("/all", auth, getAllUsers);
+router.get("/all", auth,allowRoles("owner","admin"), getAllUsers);
 
 /**
  * @swagger
