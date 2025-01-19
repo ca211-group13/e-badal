@@ -16,6 +16,10 @@ const options = {
     ],
     tags: [
       {
+        name: "Authentication",
+        description: "authantication related endpoints",
+      },
+      {
         name: "Users",
         description: "User management endpoints",
       },
@@ -31,6 +35,7 @@ const options = {
         name: "Fees",
         description: "Fee management endpoints",
       },
+
     ],
     components: {
       securitySchemes: {
