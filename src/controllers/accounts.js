@@ -1,7 +1,7 @@
 import User from "../models/user.js";
 
 
-export const addAccount = async (req, res) => {
+
     try {
       const { userId } = req.user;
       if (!userId) {
