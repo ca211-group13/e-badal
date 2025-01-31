@@ -1,4 +1,5 @@
 import { JWT_SECRET_KEY } from "../config/dotenv.js";
+// removing double s json //
 import jwt from "jsonwebtoken";
 import User from "../models/user.js";
 
