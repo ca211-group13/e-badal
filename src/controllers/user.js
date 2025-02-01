@@ -3,7 +3,7 @@ import jwt from "jsonwebtoken";
 import User from "../models/user.js";
 import transaction from "../models/transaction.js";
 
-export const getUserProfile = async (req, res) => {
+export const getUserProfile = async (req, res,next) => {
   try {
     const { userId } = req.user;
 
@@ -55,13 +55,12 @@ export const getUserProfile = async (req, res) => {
       lastTransactionStatus,
     });
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ success: false, message: "Internal Server Error" });
+    next(error);
   }
 };
 
 // Update user profile
-export const updateUser = async (req, res) => {
+export const updateUser = async (req, res,next) => {
   try {
     const { userId } = req.user; // Get the user ID from the request
     const { name, email, phoneNumber } = req.body; // Destructure the request body
@@ -93,12 +92,11 @@ export const updateUser = async (req, res) => {
 
     res.json({ success: true, message: "Profile updated successfully", user });
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ success: false, message: "Internal Server Error" });
+    next(error);
   }
 };
 
-export const deleteUser = async (req, res) => {
+export const deleteUser = async (req, res,next) => {
   try {
     const { userId } = req.user; // Get the user ID from the request
 
@@ -116,11 +114,11 @@ export const deleteUser = async (req, res) => {
     res.json({ success: true, message: "User account deleted successfully" });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ success: false, message: "Internal Server Error" });
+    next(error);
   }
 };
 
-export const getAllUsers = async (req, res) => {
+export const getAllUsers = async (req, res,next) => {
   try {
     const { userId } = req.user;
     const user = await User.findById(userId);
@@ -129,7 +127,6 @@ export const getAllUsers = async (req, res) => {
     const users = await User.find();
     res.json({ success: true, users });
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ success: false, message: "Internal Server Error" });
+    next(error);
   }
 };

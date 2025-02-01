@@ -1,6 +1,6 @@
 import Fee from "../models/fee.js";
 
-export const getFees = async (req, res) => {
+export const getFees = async (req, res,next) => {
     try {
         const fees = await Fee.findOne(); // Assuming a single fee document exists
         if (!fees) {
@@ -8,12 +8,12 @@ export const getFees = async (req, res) => {
         }
         res.status(200).json(fees);
     } catch (error) {
-        res.status(500).json({ message: error.message });
+        next(error);
     }
 };
 
 // Update deposit fee
-export const updateDepositFee = async (req, res) => {
+export const updateDepositFee = async (req, res,next) => {
     try {
         const { depositFee } = req.body;
         if (depositFee === undefined) {
@@ -28,12 +28,12 @@ export const updateDepositFee = async (req, res) => {
 
         res.status(200).json(fees);
     } catch (error) {
-        res.status(500).json({ message: error.message });
+        next(error);
     }
 };
 
 // Update withdrawal fee
-export const updateWithdrawalFee = async (req, res) => {
+export const updateWithdrawalFee = async (req, res,next) => {
     try {
         const { withdrawalFee } = req.body;
         if (withdrawalFee === undefined) {
@@ -48,6 +48,6 @@ export const updateWithdrawalFee = async (req, res) => {
 
         res.status(200).json(fees);
     } catch (error) {
-        res.status(500).json({ message: error.message });
+        next(error);
     }
 };

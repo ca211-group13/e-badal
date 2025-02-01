@@ -2,7 +2,7 @@ import { JWT_SECRET_KEY } from "../config/dotenv.js";
 import jwt from "jsonwebtoken";
 import User from "../models/user.js";
 
-export const registerUser = async (req, res) => {
+export const registerUser = async (req, res,next) => {
   try {
     const { name, email, password } = req.body;
 
@@ -30,11 +30,11 @@ export const registerUser = async (req, res) => {
       .json({ success: true, message: "User registered successfully", token });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ success: false, message: "Internal Server Error" });
+    next(error);
   }
 };
 
-export const loginUser = async (req, res) => {
+export const loginUser = async (req, res,next) => {
   try {
     const { email, password } = req.body;
 
@@ -68,13 +68,12 @@ export const loginUser = async (req, res) => {
 
     res.status(200).json({ success: true, message: "Login successful", token });
   } catch (error) {
-    console.error("Login error:", error);
-    res.status(500).json({ success: false, message: "Internal Server Error" });
+    next(error);
   }
 };
 
 // Create admin (only for owner)
-export const createAdmin = async (req, res) => {
+export const createAdmin = async (req, res,next) => {
   try {
     const { userId } = req.user;
     const { name, email, password, phoneNumber } = req.body;
@@ -102,13 +101,12 @@ export const createAdmin = async (req, res) => {
       .status(201)
       .json({ success: true, message: "Admin created successfully" });
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ success: false, message: "Internal Server Error" });
+    next(error);
   }
 };
 
 // Remove admin (Only owner can remove admin)
-export const removeAdmin = async (req, res) => {
+export const removeAdmin = async (req, res,next) => {
   try {
     const { userId } = req.user;
     const { adminId } = req.params;
@@ -129,13 +127,12 @@ export const removeAdmin = async (req, res) => {
     await User.findByIdAndDelete(adminId);
     res.json({ success: true, message: "Admin removed successfully" });
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ success: false, message: "Internal Server Error" });
+    next(error);
   }
 };
 
 // Get all admins
-export const getAdmins = async (req, res) => {
+export const getAdmins = async (req, res,next) => {
   try {
     const admins = await User.find({ role: { $in: ["admin", "owner"] } })
       .select("-password")
@@ -154,6 +151,6 @@ export const getAdmins = async (req, res) => {
       admins,
     });
   } catch (error) {
-    res.status(500).json({ message: "Server Error" });
+    next(error);
   }
 };

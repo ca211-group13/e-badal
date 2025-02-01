@@ -3,7 +3,7 @@ import Transaction from "../models/transaction.js";
 import User from '../models/user.js'
 
 // Create a New Transaction
-export const createTransaction = async (req, res) => {
+export const createTransaction = async (req, res,next) => {
     try {
       const { evcPhoneNumber, sahalPhoneNumber, zaadPhoneNumber, usdtAddress, amount, type, fee, chainType } = req.body;
   
@@ -58,13 +58,12 @@ export const createTransaction = async (req, res) => {
   
       return res.json({ success: true, message: "Transaction created", transaction });
     } catch (error) {
-      console.error(error);
-      return res.status(500).json({ success: false, message: "Internal Server Error" });
+        next(error);
     }
 };
   
 
-export const updateTransactionStatus = async (req, res) => {
+export const updateTransactionStatus = async (req, res,next) => {
     try {
         const { transactionId } = req.params;
         const { status } = req.body;
@@ -95,13 +94,12 @@ export const updateTransactionStatus = async (req, res) => {
 
         res.json({ success: true, message: "Transaction status updated", transaction });
     } catch (error) {
-        console.error(error);
-        res.status(500).json({ success: false, message: "Internal Server Error" });
+        next(error);
     }
 };
 
 
-export const getAllTransactions = async (req, res) => {
+export const getAllTransactions = async (req, res,next) => {
     try {
         const { userId } = req.user;
         const { page, limit, status } = req.query;
@@ -137,13 +135,12 @@ export const getAllTransactions = async (req, res) => {
             totalTransactions: result.totalDocs
         });
     } catch (error) {
-        console.error(error);
-        res.status(500).json({ success: false, message: "Internal Server Error" });
+        next(error);
     }
 };
 
 // Transaction Analytics
-export const getTransactionAnalytics = async (req, res) => {
+export const getTransactionAnalytics = async (req, res,next) => {
     try {
         const { userId } = req.user;  // Assuming the authenticated user is admin or owner
         const user = await User.findById(userId);
@@ -168,12 +165,11 @@ export const getTransactionAnalytics = async (req, res) => {
             message: 'Analytics data retrieved successfully'
         });
     } catch (error) {
-        console.error(error);
-        res.status(500).json({ success: false, message: "Internal Server Error" });
+        next(error);
     }
 };
 
-export const getUserTransactions = async (req, res) => {
+export const getUserTransactions = async (req, res,next) => {
     try {
         const { userId } = req.user;  // Get the authenticated user ID from the JWT middleware
 
@@ -193,7 +189,6 @@ export const getUserTransactions = async (req, res) => {
             transactions
         });
     } catch (error) {
-        console.error(error);
-        res.status(500).json({ success: false, message: "Internal Server Error" });
+        next(error);
     }
 };

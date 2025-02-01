@@ -14,10 +14,26 @@ import userRouter from "./routes/user.js";
 import feeRouter from "./routes/feeRout.js";
 import transactionRout from "./routes/transactionRout.js";
 import authRouter from "./routes/auth.js";
+import { globalErrorMiddleware } from "./middlewares/error.js";
+//home rout
 
+// auth rout
 app.use("/api/auth", authRouter);
+// uer rout
 app.use("/api/users", userRouter);
+//fees rout
 app.use("/api/fees", feeRouter);
+//transaction rout
 app.use("/api/transactions", transactionRout);
+//404 rout
+
+app.use((req,res)=>{
+    res.status(404).json({
+        success:false,
+        message:"rout not found"
+    })
+})
+
+app.use(globalErrorMiddleware)
 
 export default app;
