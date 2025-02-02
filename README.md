@@ -1,7 +1,7 @@
 # Crypto to Somali Money Converter
 
 ## Description
-This application allows users to convert cryptocurrencies into Somali local mobile money services such as **EVC Plus**, **Zaad**, and **Sahal**. It also supports transactions through **Ficevers**. The app is designed to provide a seamless and secure conversion process for Somali users.
+This application allows users to convert cryptocurrencies into Somali local mobile money services such as **EVC Plus**, **Zaad**, and **Sahal**. It also supports transactions through **Ficevers**. The app is designed to provide a seamless and secure conversion process for Somali users
 
 ## Features
 - Convert popular cryptocurrencies to Somali mobile money services
